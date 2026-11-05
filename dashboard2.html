@@ -1661,7 +1661,7 @@
     </div>
 
 
-    <!-- ==================================================
+   <!-- ==================================================
      SEND TAB
 ================================================== -->
 
@@ -1684,6 +1684,7 @@
 
   <section class="card">
 
+    <!-- ASSET + AMOUNT -->
     <div class="form-row">
 
       <div class="form-group">
@@ -1692,7 +1693,7 @@
           Asset
         </label>
 
-        <select id="sendAsset" onchange="updateGasFee()">
+        <select id="sendAsset">
 
           <option value="USDT">
             USDT
@@ -1718,14 +1719,14 @@
           type="number"
           min="0"
           step="0.000001"
-          placeholder="0.00"
-          oninput="updateGasFee()">
+          placeholder="0.00">
 
       </div>
 
     </div>
 
 
+    <!-- DESTINATION -->
     <div class="form-group">
 
       <label class="form-label">
@@ -1740,6 +1741,7 @@
     </div>
 
 
+    <!-- NETWORK -->
     <div class="form-group">
 
       <label class="form-label">
@@ -1765,41 +1767,84 @@
     </div>
 
 
-    <!-- WITHDRAWAL FEE -->
+    <!-- ==================================================
+         ETH GAS FEE
+    ================================================== -->
+
     <div
-      id="gasFeeBox"
-      class="fee-summary">
+      class="form-group"
+      style="margin-top: 20px;">
 
-      <div class="fee-row">
-        <span>
-          ETH Gas Fee (5%)
-        </span>
+      <label class="form-label">
+        ETH Gas Fee
+      </label>
 
-        <span id="gasFeeAmount">
-          0.000000 ETH
-        </span>
-      </div>
+      <div
+        style="
+          padding: 14px 16px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          background: #f8f8f8;
+        ">
 
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          ">
 
-      <div class="fee-row">
-        <strong>
-          You Receive
-        </strong>
+          <span>
+            ETH Gas Fee (5%)
+          </span>
 
-        <strong id="netSendAmount">
-          0.000000 ETH
-        </strong>
+          <strong id="gasFeeAmount">
+            0.000000 ETH
+          </strong>
+
+        </div>
+
       </div>
 
     </div>
 
+
+    <!-- AMOUNT RECEIVED -->
+
+    <div
+      class="form-group"
+      style="margin-top: 10px;">
+
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        ">
+
+        <span>
+          You Receive
+        </span>
+
+        <strong id="netSendAmount">
+          0.000000 ETH
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- SEND BUTTON -->
 
     <div class="form-actions">
 
       <button
         type="button"
         onclick="sendCrypto()">
+
         Send
+
       </button>
 
     </div>
@@ -1809,6 +1854,10 @@
 </div>
 
 
+<!-- ==================================================
+     GAS FEE CALCULATION
+================================================== -->
+
 <script>
 
 function updateGasFee() {
@@ -1817,44 +1866,6 @@ function updateGasFee() {
     document.getElementById("sendAsset").value;
 
   const amount =
-    parseFloat(
-      document.getElementById("sendAmount").value
-    ) || 0;
-
-  const gasFeeAmount =
-    document.getElementById("gasFeeAmount");
-
-  const netSendAmount =
-    document.getElementById("netSendAmount");
-
-  /*
-   * 5% fee
-   */
-  const fee = amount * 0.05;
-
-  const netAmount = amount - fee;
-
-
-  /*
-   * Show ETH fee only for ETH withdrawals.
-   */
-  if (asset === "ETH") {
-
-    gasFeeAmount.textContent =
-      fee.toFixed(6) + " ETH";
-
-    netSendAmount.textContent =
-      netAmount.toFixed(6) + " ETH";
-
-  } else {
-
-    gasFeeAmount.textContent =
-      "0.000000 ETH";
-
-    netSendAmount.textContent =
-      amount.toFixed(6) + " " + asset;
-
-  }
 
 </script>
 
