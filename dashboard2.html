@@ -2422,7 +2422,13 @@
             "sendAmount"
           ).value
         );
+const gasFee = amount * 0.05;
+const netAmount = amount - gasFee;
 
+      if (!Number.isFinite(amount) || amount <= 0) {
+  message.textContent = "Please enter a valid amount.";
+  return;
+}
       const address =
         document.getElementById(
           "sendAddress"
@@ -2472,9 +2478,19 @@
       }
 
 
-      message.textContent =
-        `Send review prepared: ${amount} ${asset} on ${network}. Real blockchain submission requires a secure backend transaction service.`;
+     const gasFee = amount * 0.05;
+const netAmount = amount - gasFee;
 
+message.textContent =
+  `Send review prepared:
+  Amount: ${amount.toFixed(2)} ${asset}
+  Withdrawal Fee (5%): ${gasFee.toFixed(2)} ${asset}
+  Recipient Receives: ${netAmount.toFixed(2)} ${asset}
+  Network: ${network}
+  Destination: ${address}
+
+  Please review the fee before confirming.
+  Real blockchain submission requires a secure backend transaction service.`;
     }
 
 
