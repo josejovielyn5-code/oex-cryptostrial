@@ -2441,39 +2441,93 @@
 
       if (!address) {
 
-        message.textContent =
-          "Please enter a destination address.";
+  message.textContent =
+    "Please enter a destination address.";
 
-        return;
+  return;
 
-      }
-
-
-      if (!amount || amount <= 0) {
-
-        message.textContent =
-          "Please enter a valid amount.";
-
-        return;
-
-      }
+}
 
 
-      if (
-        amount >
-        Number(walletBalances[asset] || 0)
-      ) {
+if (!amount || amount <= 0) {
 
-        message.textContent =
-          "Insufficient available balance.";
+  message.textContent =
+    "Please enter a valid amount.";
 
-        return;
+  return;
 
-      }
+}
 
 
-      message.textContent =
-        `Send review prepared: ${amount} ${asset} on ${network}. Real blockchain submission requires a secure backend transaction service.`;
+if (
+  amount >
+  Number(walletBalances[asset] || 0)
+) {
+
+  message.textContent =
+    "Insufficient available balance.";
+
+  return;
+
+}
+
+
+/* ==========================================
+   USDT ETH WITHDRAWAL FEE
+   ========================================== */
+
+if (asset === "USDT") {
+
+  const ethFeePercent = 5;
+
+  const feeUsdt =
+    amount * (ethFeePercent / 100);
+
+  const ethPrice =
+    Number(walletPrices["ETH"] || 0);
+
+  if (!ethPrice || ethPrice <= 0) {
+
+    message.textContent =
+      "Unable to calculate ETH fee right now.";
+
+    return;
+
+  }
+
+  const feeEth =
+    feeUsdt / ethPrice;
+
+  const ethBalance =
+    Number(walletBalances["ETH"] || 0);
+
+  if (feeEth > ethBalance) {
+
+    message.textContent =
+      `Insufficient ETH balance for the ${ethFeePercent}% fee. ` +
+      `Required: ${feeEth.toFixed(8)} ETH. ` +
+      `Available: ${ethBalance.toFixed(8)} ETH.`;
+
+    return;
+
+  }
+
+  message.textContent =
+    `Send review prepared: ${amount} USDT. ` +
+    `ETH fee: ${feeEth.toFixed(8)} ETH ` +
+    `(${feeUsdt.toFixed(6)} USDT). ` +
+    `Network: ${network}.`;
+
+  return;
+
+}
+
+
+message.textContent =
+  `Send review prepared: ${amount} ${asset} on ${network}. ` +
+  `Real blockchain submission requires a secure backend transaction service.`;
+
+   
 
     }
 
